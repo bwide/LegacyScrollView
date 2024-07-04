@@ -10,14 +10,14 @@ import SwiftUI
 
 public struct LegacyScrollViewProxy {
 
-    internal var getScrollView: () -> UIScrollView
+    internal var getScrollView: () -> UIScrollView?
     internal var getRectOfContent: (_ id: Int) -> CGRect?
     internal var performScrollToPoint: (_ point: CGPoint, _ animated: Bool) -> Void
     internal var performScrollToId: (_ id: Int, _ anchor: UnitPoint, _ animated: Bool) -> Void
     internal var performScrollToIdIfNeeded: (_ id: Int, _ anchor: UnitPoint) -> Void
 
     /// Returns the UIScrollView
-    public var scrollView: UIScrollView { getScrollView() }
+    public var scrollView: UIScrollView? { getScrollView() }
     /// returns the content's CGRect
     public func rectOfContent<ID: Hashable>(id: ID) -> CGRect? { getRectOfContent(id.hashValue) }
     /// performs a scroll to a specific `CGPoint`
@@ -31,7 +31,7 @@ public struct LegacyScrollViewProxy {
 extension LegacyScrollViewReader {
     func makeProxy(with view: LegacyUIScrollViewReader) -> LegacyScrollViewProxy {
         LegacyScrollViewProxy {
-            view.scrollView!
+            view.scrollView
         } getRectOfContent: { id in
             getRectOfContent(with: id, in: view)
         } performScrollToPoint: { point, animated in

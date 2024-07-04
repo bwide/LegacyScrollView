@@ -22,6 +22,10 @@ public struct LegacyScrollViewReader<Content: View>: UIViewRepresentable {
     }
 
     public func updateUIView(_ view: LegacyUIScrollViewReader, context: Context) {
+        guard let _ = view.scrollView else {
+            //Warning: updateUIView called before view was added to view hierarchy
+            return
+        }
         let proxy = makeProxy(with: view)
         let contentView = content(proxy)
 
